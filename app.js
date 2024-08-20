@@ -1,9 +1,11 @@
+// Hent brukere fra backend og oppdater tabellen
 async function hentBrukere() {
     const response = await fetch('https://node-red.cloudflareno.de/api/brukere'); // Juster URL om nødvendig
     const brukere = await response.json();
     oppdaterBrukerListe(brukere);
 }
 
+// Oppdater tabellen med brukere
 function oppdaterBrukerListe(brukere) {
     const brukerListe = document.getElementById('brukerListe');
     brukerListe.innerHTML = ''; // Rens tabellen
@@ -26,6 +28,7 @@ function oppdaterBrukerListe(brukere) {
     });
 }
 
+// Ta en bruker ved å skrive inn navnet ditt
 async function taBruker(brukerId) {
     const ansatt = prompt('Vennligst skriv inn ditt navn:');
     if (ansatt) {
@@ -44,18 +47,23 @@ async function taBruker(brukerId) {
     }
 }
 
+// Frigjør en bruker med en bekreftelsesdialog
 async function frigjorBruker(brukerId) {
-    await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            brukerId: brukerId,
-            aksjon: 'frigjør'
-        })
-    });
-    hentBrukere();
+    const bekreftelse = confirm('Er du sikker på at du vil frigjøre brukeren? Husk at du ikke må frigjøre brukere som benyttes av andre.');
+
+    if (bekreftelse) {
+        await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                brukerId: brukerId,
+                aksjon: 'frigjør'
+            })
+        });
+        hentBrukere();
+    }
 }
 
 // Initialiser ved å hente brukere når siden lastes
