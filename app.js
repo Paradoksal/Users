@@ -41,25 +41,40 @@ function oppdaterBrukerListe(brukere) {
     brukerListe.appendChild(fragment);
 }
 
+// Finn den første ledige brukeren i listen
+function finnForsteLedigeBruker(brukere) {
+    return brukere.find(bruker => bruker.status === 'Ledig');
+}
+
 // Ta en bruker ved å skrive inn navnet ditt
 async function taBruker(brukerId) {
-    const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
-    if (!row) {
-        alert('Brukeren finnes ikke.');
-        return;
-    }
+    try {
+        const response = await fetch(`${BASE_URL}/brukere`);
+        if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
+        const brukere = await response.json();
 
-    const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
-    if (statusCell.textContent === 'Opptatt') {
-        // Vis en enkel dialogboks med en "OK" knapp
-        alert('Denne brukeren er opptatt, ta neste ledige bruker i listen');
-        return;
-    }
+        const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
+        if (!row) {
+            alert('Brukeren finnes ikke.');
+            return;
+        }
 
-    const ansatt = prompt('Vennligst skriv inn ditt navn:');
-    if (ansatt) {
-        try {
-            const response = await fetch(`${BASE_URL}/oppdater`, {
+        const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
+        const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
+
+        if (statusCell.textContent === 'Opptatt') {
+            alert('Denne brukeren er opptatt, ta neste ledige bruker i listen');
+            return;
+        }
+
+        if (brukerId !== forsteLedigeBruker.id) {
+            alert(`Denne brukeren er ikke den første ledige. Ta bruker ${forsteLedigeBruker.navn} som er den første ledige.`);
+            return;
+        }
+
+        const ansatt = prompt('Vennligst skriv inn ditt navn:');
+        if (ansatt) {
+            const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -71,15 +86,15 @@ async function taBruker(brukerId) {
                 })
             });
 
-            if (response.ok) {
+            if (updateResponse.ok) {
                 hentBrukere();
             } else {
                 alert('Noe gikk galt med å ta brukeren.');
             }
-        } catch (error) {
-            console.error('Feil ved oppdatering:', error);
-            alert('Noe gikk galt med forespørselen.');
         }
+    } catch (error) {
+        console.error('Feil ved oppdatering:', error);
+        alert('Noe gikk galt med forespørselen.');
     }
 }
 
