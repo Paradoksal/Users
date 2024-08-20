@@ -2,6 +2,7 @@
 async function hentBrukere() {
     try {
         const response = await fetch('https://node-red.cloudflareno.de/api/brukere'); // Juster URL om nødvendig
+        if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
         oppdaterBrukerListe(brukere);
     } catch (error) {
@@ -14,6 +15,8 @@ async function hentBrukere() {
 function oppdaterBrukerListe(brukere) {
     const brukerListe = document.getElementById('brukerListe');
     brukerListe.innerHTML = ''; // Rens tabellen
+
+    const fragment = document.createDocumentFragment(); // For å forbedre ytelsen
 
     brukere.forEach(bruker => {
         const row = document.createElement('tr');
@@ -30,8 +33,10 @@ function oppdaterBrukerListe(brukere) {
             </td>
         `;
 
-        brukerListe.appendChild(row);
+        fragment.appendChild(row);
     });
+
+    brukerListe.appendChild(fragment);
 }
 
 // Ta en bruker ved å skrive inn navnet ditt
@@ -44,8 +49,7 @@ async function taBruker(brukerId) {
 
     const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
     if (statusCell.textContent === 'Opptatt') {
-        alert('Denne brukeren er allerede opptatt av en annen.');
-        hentNesteLedigeBruker();
+        alert('Denne brukeren er opptatt, ta neste ledige bruker i listen.');
         return;
     }
 
@@ -73,25 +77,6 @@ async function taBruker(brukerId) {
             console.error('Feil ved oppdatering:', error);
             alert('Noe gikk galt med forespørselen.');
         }
-    }
-}
-
-// Hent neste ledige bruker og prøv å ta den
-async function hentNesteLedigeBruker() {
-    try {
-        const response = await fetch('https://node-red.cloudflareno.de/api/brukere'); // Juster URL om nødvendig
-        const brukere = await response.json();
-
-        // Finn den første ledige brukeren
-        const ledigBruker = brukere.find(bruker => bruker.status === 'Ledig');
-        if (ledigBruker) {
-            taBruker(ledigBruker.id);
-        } else {
-            alert('Ingen ledige brukere tilgjengelige.');
-        }
-    } catch (error) {
-        console.error('Feil ved henting av brukere:', error);
-        alert('Kunne ikke hente brukere.');
     }
 }
 
