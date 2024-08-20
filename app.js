@@ -25,10 +25,11 @@ function oppdaterBrukerListe(brukere) {
         row.classList.add(bruker.status.toLowerCase());
         row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
+        // Endre HTML-innholdet for å ikke vise 'Ingen' når det ikke er noen ansatt
         row.innerHTML = `
             <td>${bruker.navn}</td>
             <td>${bruker.status}</td>
-            <td>${bruker.ansatt || 'Ingen'}</td>
+            <td>${bruker.ansatt || ''}</td>
             <td class="actions">
                 <button onclick="håndterBruker(${bruker.id})">
                     ${bruker.status === 'Ledig' ? 'Ta Bruker' : 'Frigjør Bruker'}
@@ -122,7 +123,7 @@ async function håndterBruker(brukerId) {
 function hentAnsattNavn(brukerId) {
     const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
     const ansattCell = row ? row.cells[2] : null;
-    return ansattCell ? ansattCell.textContent : 'Ingen';
+    return ansattCell ? ansattCell.textContent.trim() : '';
 }
 
 // Initialiser ved å hente brukere når siden lastes
