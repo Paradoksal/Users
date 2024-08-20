@@ -60,3 +60,6 @@ async function frigjorBruker(brukerId) {
 
 // Initialiser ved å hente brukere når siden lastes
 hentBrukere();
+
+// Oppdater tabellen automatisk hvert 10. sekund
+setInterval(hentBrukere, 10000);
