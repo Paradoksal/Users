@@ -13,6 +13,7 @@ function oppdaterBrukerListe(brukere) {
     brukere.forEach(bruker => {
         const row = document.createElement('tr');
         row.classList.add(bruker.status.toLowerCase());
+        row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
         row.innerHTML = `
             <td>${bruker.navn}</td>
@@ -47,9 +48,17 @@ async function taBruker(brukerId) {
     }
 }
 
+// Hent ansatt-navn fra tabellen basert på bruker-ID
+function hentAnsattNavn(brukerId) {
+    const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
+    const ansattCell = row ? row.cells[2] : null;
+    return ansattCell ? ansattCell.textContent : 'Ingen';
+}
+
 // Frigjør en bruker med en bekreftelsesdialog
 async function frigjorBruker(brukerId) {
-    const bekreftelse = confirm('Er du sikker på at du vil frigjøre brukeren? Husk at du ikke må frigjøre brukere som benyttes av andre.');
+    const ansattNavn = hentAnsattNavn(brukerId);
+    const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}? Husk at du ikke må frigjøre brukere som benyttes av andre.`);
 
     if (bekreftelse) {
         await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
