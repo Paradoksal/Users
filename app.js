@@ -49,18 +49,23 @@ function finnForsteLedigeBruker(brukere) {
 // Ta en bruker ved å skrive inn navnet ditt
 async function taBruker(brukerId) {
     try {
+        // Hent alle brukere
         const response = await fetch(`${BASE_URL}/brukere`);
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
+        // Finn den første ledige brukeren
+        const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
+        
+        // Hent rad for den valgte brukeren
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
             alert('Brukeren finnes ikke.');
             return;
         }
 
+        // Hent status på den valgte brukeren
         const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
-        const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
 
         if (statusCell.textContent === 'Opptatt') {
             alert('Denne brukeren er opptatt, ta neste ledige bruker i listen');
