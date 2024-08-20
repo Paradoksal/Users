@@ -1,8 +1,13 @@
 // Hent brukere fra backend og oppdater tabellen
 async function hentBrukere() {
-    const response = await fetch('https://node-red.cloudflareno.de/api/brukere'); // Juster URL om nødvendig
-    const brukere = await response.json();
-    oppdaterBrukerListe(brukere);
+    try {
+        const response = await fetch('https://node-red.cloudflareno.de/api/brukere'); // Juster URL om nødvendig
+        const brukere = await response.json();
+        oppdaterBrukerListe(brukere);
+    } catch (error) {
+        console.error('Feil ved henting av brukere:', error);
+        alert('Kunne ikke hente brukere.');
+    }
 }
 
 // Oppdater tabellen med brukere
@@ -31,20 +36,42 @@ function oppdaterBrukerListe(brukere) {
 
 // Ta en bruker ved å skrive inn navnet ditt
 async function taBruker(brukerId) {
+    const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
+    if (!row) {
+        alert('Brukeren finnes ikke.');
+        return;
+    }
+
+    const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
+    if (statusCell.textContent === 'Opptatt') {
+        alert('Denne brukeren er allerede opptatt av en annen.');
+        return;
+    }
+
     const ansatt = prompt('Vennligst skriv inn ditt navn:');
     if (ansatt) {
-        await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                brukerId: brukerId,
-                ansatt: ansatt,
-                aksjon: 'ta'
-            })
-        });
-        hentBrukere();
+        try {
+            const response = await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    brukerId: brukerId,
+                    ansatt: ansatt,
+                    aksjon: 'ta'
+                })
+            });
+
+            if (response.ok) {
+                hentBrukere();
+            } else {
+                alert('Noe gikk galt med å ta brukeren.');
+            }
+        } catch (error) {
+            console.error('Feil ved oppdatering:', error);
+            alert('Noe gikk galt med forespørselen.');
+        }
     }
 }
 
@@ -61,17 +88,27 @@ async function frigjorBruker(brukerId) {
     const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}? Husk at du ikke må frigjøre brukere som benyttes av andre.`);
 
     if (bekreftelse) {
-        await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                brukerId: brukerId,
-                aksjon: 'frigjør'
-            })
-        });
-        hentBrukere();
+        try {
+            const response = await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    brukerId: brukerId,
+                    aksjon: 'frigjør'
+                })
+            });
+
+            if (response.ok) {
+                hentBrukere();
+            } else {
+                alert('Noe gikk galt med å frigjøre brukeren.');
+            }
+        } catch (error) {
+            console.error('Feil ved oppdatering:', error);
+            alert('Noe gikk galt med forespørselen.');
+        }
     }
 }
 
