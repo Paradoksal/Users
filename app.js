@@ -1,7 +1,9 @@
+const BASE_URL = 'https://node-red.cloudflareno.de/api';
+
 // Hent brukere fra backend og oppdater tabellen
 async function hentBrukere() {
     try {
-        const response = await fetch('https://node-red.cloudflareno.de/api/brukere'); // Juster URL om nødvendig
+        const response = await fetch(`${BASE_URL}/brukere`);
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
         oppdaterBrukerListe(brukere);
@@ -49,14 +51,15 @@ async function taBruker(brukerId) {
 
     const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
     if (statusCell.textContent === 'Opptatt') {
-        alert('Denne brukeren er opptatt, ta neste ledige bruker i listen.');
+        // Vis en enkel dialogboks med en "OK" knapp
+        alert('Denne brukeren er opptatt, ta neste ledige bruker i listen');
         return;
     }
 
     const ansatt = prompt('Vennligst skriv inn ditt navn:');
     if (ansatt) {
         try {
-            const response = await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
+            const response = await fetch(`${BASE_URL}/oppdater`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -94,7 +97,7 @@ async function frigjorBruker(brukerId) {
 
     if (bekreftelse) {
         try {
-            const response = await fetch('https://node-red.cloudflareno.de/api/oppdater', { // Juster URL om nødvendig
+            const response = await fetch(`${BASE_URL}/oppdater`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
