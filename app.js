@@ -30,8 +30,9 @@ function oppdaterBrukerListe(brukere) {
             <td>${bruker.status}</td>
             <td>${bruker.ansatt || 'Ingen'}</td>
             <td class="actions">
-                <button onclick="taBruker(${bruker.id})">Ta Bruker</button>
-                <button onclick="frigjorBruker(${bruker.id})">Frigjør Bruker</button>
+                <button onclick="håndterBruker(${bruker.id})">
+                    ${bruker.status === 'Ledig' ? 'Ta Bruker' : 'Frigjør Bruker'}
+                </button>
             </td>
         `;
 
@@ -46,17 +47,14 @@ function finnForsteLedigeBruker(brukere) {
     return brukere.find(bruker => bruker.status === 'Ledig');
 }
 
-// Ta en bruker ved å skrive inn navnet ditt
-async function taBruker(brukerId) {
+// Håndter bruker basert på status
+async function håndterBruker(brukerId) {
     try {
         // Hent alle brukere
         const response = await fetch(`${BASE_URL}/brukere`);
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
-        // Finn den første ledige brukeren
-        const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
-        
         // Hent rad for den valgte brukeren
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
@@ -66,36 +64,53 @@ async function taBruker(brukerId) {
 
         // Hent status på den valgte brukeren
         const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
+        const brukerStatus = statusCell.textContent.trim();
 
-        if (statusCell.textContent === 'Opptatt') {
-            alert('Denne brukeren er opptatt, ta neste ledige bruker i listen');
-            return;
-        }
+        if (brukerStatus === 'Ledig') {
+            const ansatt = prompt('Vennligst skriv inn ditt navn:');
+            if (ansatt) {
+                const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        brukerId: brukerId,
+                        ansatt: ansatt,
+                        aksjon: 'ta'
+                    })
+                });
 
-        if (brukerId !== forsteLedigeBruker.id) {
-            alert(`Denne brukeren er ikke den første ledige. Ta ${forsteLedigeBruker.navn} som er den første ledige.`);
-            return;
-        }
-
-        const ansatt = prompt('Vennligst skriv inn ditt navn:');
-        if (ansatt) {
-            const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    brukerId: brukerId,
-                    ansatt: ansatt,
-                    aksjon: 'ta'
-                })
-            });
-
-            if (updateResponse.ok) {
-                hentBrukere();
-            } else {
-                alert('Noe gikk galt med å ta brukeren.');
+                if (updateResponse.ok) {
+                    hentBrukere();
+                } else {
+                    alert('Noe gikk galt med å ta brukeren.');
+                }
             }
+        } else if (brukerStatus === 'Opptatt') {
+            const ansattNavn = hentAnsattNavn(brukerId);
+            const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}? Husk at du ikke må frigjøre brukere som benyttes av andre.`);
+
+            if (bekreftelse) {
+                const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        brukerId: brukerId,
+                        aksjon: 'frigjør'
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    hentBrukere();
+                } else {
+                    alert('Noe gikk galt med å frigjøre brukeren.');
+                }
+            }
+        } else {
+            alert('Ukjent status.');
         }
     } catch (error) {
         console.error('Feil ved oppdatering:', error);
@@ -108,36 +123,6 @@ function hentAnsattNavn(brukerId) {
     const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
     const ansattCell = row ? row.cells[2] : null;
     return ansattCell ? ansattCell.textContent : 'Ingen';
-}
-
-// Frigjør en bruker med en bekreftelsesdialog
-async function frigjorBruker(brukerId) {
-    const ansattNavn = hentAnsattNavn(brukerId);
-    const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}? Husk at du ikke må frigjøre brukere som benyttes av andre.`);
-
-    if (bekreftelse) {
-        try {
-            const response = await fetch(`${BASE_URL}/oppdater`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    brukerId: brukerId,
-                    aksjon: 'frigjør'
-                })
-            });
-
-            if (response.ok) {
-                hentBrukere();
-            } else {
-                alert('Noe gikk galt med å frigjøre brukeren.');
-            }
-        } catch (error) {
-            console.error('Feil ved oppdatering:', error);
-            alert('Noe gikk galt med forespørselen.');
-        }
-    }
 }
 
 // Initialiser ved å hente brukere når siden lastes
