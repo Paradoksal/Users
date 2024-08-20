@@ -73,7 +73,7 @@ async function taBruker(brukerId) {
         }
 
         if (brukerId !== forsteLedigeBruker.id) {
-            alert(`Denne brukeren er ikke den første ledige. Ta bruker ${forsteLedigeBruker.navn} som er den første ledige.`);
+            alert(`Denne brukeren er ikke den første ledige. Ta ${forsteLedigeBruker.navn} som er den første ledige.`);
             return;
         }
 
