@@ -56,15 +56,6 @@ async function håndterBruker(brukerId) {
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
-        // Finn den første ledige brukeren
-        const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
-
-        // Hvis den brukeren som forsøkes tatt ikke er den første ledige
-        if (forsteLedigeBruker && forsteLedigeBruker.id !== brukerId) {
-            alert(`Vennligst ta den første ledige brukeren: ${forsteLedigeBruker.navn}.`);
-            return;
-        }
-
         // Hent rad for den valgte brukeren
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
@@ -76,7 +67,15 @@ async function håndterBruker(brukerId) {
         const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
         const brukerStatus = statusCell.textContent.trim();
 
+        // Hvis brukeren er "Ledig", sjekk om det er den første ledige brukeren
         if (brukerStatus === 'Ledig') {
+            const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
+
+            if (forsteLedigeBruker && forsteLedigeBruker.id !== brukerId) {
+                alert(`Vennligst ta den første ledige brukeren: ${forsteLedigeBruker.navn}.`);
+                return;
+            }
+
             const ansatt = prompt('Vennligst skriv inn ditt navn:');
             if (ansatt) {
                 const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
