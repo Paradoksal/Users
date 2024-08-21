@@ -56,6 +56,15 @@ async function håndterBruker(brukerId) {
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
+        // Finn den første ledige brukeren
+        const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
+
+        // Hvis den brukeren som forsøkes tatt ikke er den første ledige
+        if (forsteLedigeBruker && forsteLedigeBruker.id !== brukerId) {
+            alert(`Vennligst ta den første ledige brukeren: ${forsteLedigeBruker.navn}.`);
+            return;
+        }
+
         // Hent rad for den valgte brukeren
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
