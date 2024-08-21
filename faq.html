@@ -3,53 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hvorfor en så kompleks påloggingsmetode?</title>
+    <title>FAQ - Ongoing Brukerhåndtering</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-        h1 {
-            font-size: 24px;
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #fff 3px solid;
+            text-align: center;
         }
-        h2 {
-            font-size: 20px;
-            margin-top: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
+        header h1 {
+            margin: 0;
         }
-        p {
-            margin-bottom: 20px;
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
         }
-        .note {
-            font-style: italic;
-            color: #555;
-        }
-        .back-link {
+        .back-to-overview {
+            background: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
             display: block;
+            margin: 20px 0;
+        }
+        .back-to-overview:hover {
+            background: #0056b3;
+        }
+        .index {
+            background: #fff;
+            padding: 20px;
             margin-top: 20px;
-            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .index h2 {
+            margin-top: 0;
+            font-size: 1.2em; /* Litt mindre enn standard størrelse */
+        }
+        .index ul {
+            list-style: none;
+            padding: 0;
+        }
+        .index ul li {
+            margin: 10px 0;
+        }
+        .index ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .index ul li a:hover {
+            text-decoration: underline;
+        }
+        .faq {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .faq h2 {
+            background: #eee;
+            padding: 10px;
+            margin: 0;
+            border-bottom: #ddd 1px solid;
+            font-size: 1.2em; /* Litt mindre enn standard størrelse */
+        }
+        .faq p {
+            padding: 10px;
+            margin: 0;
+        }
+        .contact {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .contact h2 {
+            background: #eee;
+            padding: 10px;
+            margin: 0;
+            border-bottom: #ddd 1px solid;
+            font-size: 1.2em; /* Litt mindre enn standard størrelse */
+        }
+        .contact p {
+            padding: 10px;
+            margin: 0;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>FAQ - Ongoing Brukerhåndtering</h1>
+    </header>
 
-    <h1>Hvorfor benytter vi en så kompleks påloggingsmetode i Ongoing?</h1>
-    <p>Svaret er enkelt: for å holde kostnadene nede.</p>
-    <p>Ongoing har en prisstruktur der du blir belastet for antall brukere som har vært pålogget i løpet av en måned. Jo flere brukere som har vært pålogget, desto høyere blir kostnaden for den måneden.</p>
-    <p>Derfor er det økonomisk fordelaktig at flere ansatte deler på de samme brukerne, i stedet for at hver fulltids-, deltids- og vikaransatt har sin egen bruker som medfører ekstra kostnader.</p>
-    <p>Husk å frigjøre brukeren du har benyttet hvis du for eksempel slutter tidligere på dagen. Alle brukere blir automatisk frigjort kl. 17:00.</p>
-    <p class="note">Merk: Denne begrensningen gjelder kun for Ongoing WMS. Andre systemer vi bruker, har ikke den samme prisstrukturen og dermed ikke denne begrensningen. Som for eks. eManager for AutoStore.</p>
+    <div class="container">
+        <a href="index.html" class="back-to-overview">Tilbake til brukeroversikt</a>
 
-    <h2>Hvordan fungerer dette?</h2>
-    <p>Dette er en digital erstatning for kort-systemet som ikke fungerte veldig bra.</p>
-    <p>Hvis du skal gjøre en jobb som krever Ongoing tilgang, så sjekker du denne listen for ledige brukere og "tar" den første ledige brukeren, for å indikere at du nå benytter denne.</p>
-    <p>Dette er et tillitsbasert system og det er viktig at du "tar" en bruker før du logger inn i Ongoing for å hindre at noen andre logger inn med samme bruker og kaster deg ut.</p>
-    <p>Når du er ferdig med å jobbe i Ongoing for dagen, eller i en lengre periode, så er det fint å huske å frigjøre brukeren her igjen, slik at andre kan benytte seg av denne hvis nødvendig.</p>
-    <p class="note">Merk: Det at du tar en bruker har ingen funksjon annet enn å indikere at du nå benytter denne brukeren, slik at ingen andre logger inn med samme bruker.</p>
+        <div class="index">
+            <h2>Indeks</h2>
+            <ul>
+                <li><a href="#user_access">Hvorfor kan jeg ikke bare ha min egen bruker jeg alltid kan logge inn med?</a></li>
+                <li><a href="#cost">Det kan da ikke være så stor kostnad bare for en bruker?</a></li>
+                <li><a href="#shared_user">Kan vi ikke da bare ha en bruker som alle kan bruke?</a></li>
+                <li><a href="#using">Hvordan skal jeg bruke dette?</a></li>
+                <li><a href="#login">Hvordan logger inn i Ongoing etter at jeg har tatt en ledig bruker?</a></li>
+                <li><a href="#card_solution">Hva med kort-løsningen vi hadde før?</a></li>
+                <li><a href="#desktop_scan">Hvorfor har hver bruker en "Desktop" og en "Skann" man kan ta?</a></li>
+            </ul>
+        </div>
 
-    <a href="index.html" class="back-link">Tilbake til brukeroversikten</a>
+        <div class="faq">
+            <h2 id="user_access">Hvorfor kan jeg ikke bare ha min egen bruker jeg alltid kan logge inn med?</h2>
+            <p>Ongoing har en prisstruktur der man blir belastet for antall brukere som har vært pålogget i løpet av en måned. Jo flere brukere som har vært pålogget, desto høyere blir kostnaden for den måneden. Derfor er det økonomisk fordelaktig at flere ansatte deler på de samme brukerne, i stedet for at hver fulltids-, deltids- og vikaransatt har sin egen bruker som medfører ekstra kostnader. Husk derfor å frigjøre brukeren du har benyttet hvis du for eksempel slutter tidligere på dagen. Alle brukere blir automatisk frigjort kl. 17:00. Merk: Denne begrensningen gjelder kun for Ongoing WMS. Andre systemer vi bruker, har ikke nødvendigvis den samme prisstrukturen og dermed ikke den samme begrensningen. Som for eks. eManager for AutoStore hvor alle har hver sin unike bruker.</p>
 
+            <h2 id="cost">Det kan da ikke være så stor kostnad bare for en bruker?</h2>
+            <p>Fra 2000,- hver måned, som er årsaken til at det er ønskelig å begrense antallet.</p>
+
+            <h2 id="shared_user">Kan vi ikke da bare ha en bruker som alle kan bruke?</h2>
+            <p>Nei, hvis du jobber i Ongoing og noen logger inn med samme bruker et annet sted så blir du kastet ut.</p>
+
+            <h2 id="using">Hvordan skal jeg bruke dette?</h2>
+            <p>Hvis du skal gjøre en jobb som krever Ongoing tilgang så må du først sjekke denne listen og «ta en» ledig bruker, for å indikere for alle andre at nå er denne brukeren opptatt.</p>
+
+            <h2 id="login">Hvordan logger inn i Ongoing etter at jeg har tatt en ledig bruker?</h2>
+            <p>Du åpner opp login siden til Ongoing som du gjør til vanlig og logger inn med Bruker ID du tok. Brukernavnet er da for eks. «Bruker 01». Passordet er likt på alle brukere: «Colliflow2024».</p>
+
+            <h2 id="card_solution">Hva med kort-løsningen vi hadde før?</h2>
+            <p>Kort løsningen var tenkt å ha samme funksjon som denne oversikten, men det har ikke fungert som ønsket da folk har beholdt kort ved faste stasjoner som virker mot sin hensikt med å kunne dele på brukere. Informasjonen på kortene er utgått og du vil ikke få logget inn med disse lenger, alle kort du har liggende, hengende, eller skulle finne, kan destrueres.</p>
+
+            <h2 id="desktop_scan">Hvorfor har hver bruker en "Desktop" og en "Skann" man kan ta?</h2>
+            <p>Ongoing har to forskjellige grensesnitt, et desktop grensesnitt og en skannemodul. Det er tillatt å være logget inn med samme bruker både i desktop grensesnittet og i skannemodul. Hvis du skal jobbe i Ongoing på en PC (for eks. på en arbeidsstasjon hvor du pakker ordre) så tar du en desktop bruker fra oversikten. En annen ansatt som skal jobbe med en håndholdt skanner (for eks. for å plukke ordre) kan da ta Skann bruker med samme Bruker ID uten at det skaper en konflikt. På den måten kan man begrense behovet for unike brukere i Ongoing.</p>
+        </div>
+
+        <div class="contact">
+            <h2>Jeg har fortsatt noen spørsmål</h2>
+            <p>Spørsmål eller forslag til forbedringer kan rettes til Glenn André.</p>
+        </div>
+    </div>
 </body>
 </html>
