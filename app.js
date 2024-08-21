@@ -22,20 +22,33 @@ function oppdaterBrukerListe(brukere) {
 
     brukere.forEach(bruker => {
         const row = document.createElement('tr');
-        row.classList.add(bruker.status.toLowerCase());
         row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
-        // Endre HTML-innholdet for å ikke vise 'Ingen' når det ikke er noen ansatt
         row.innerHTML = `
             <td>${bruker.navn}</td>
-            <td>${bruker.status}</td>
-            <td>${bruker.ansatt || ''}</td>
+            <td class="ansatt-d">${bruker.ansattD || ''}</td>
             <td class="actions">
-                <button onclick="håndterBruker(${bruker.id})">
-                    ${bruker.status === 'Ledig' ? 'Ta Bruker' : 'Frigjør Bruker'}
+                <button onclick="håndterBruker(${bruker.id}, 'desktop')">
+                    ${bruker.ansattD ? 'Frigjør Bruker' : 'Ta Bruker'}
+                </button>
+            </td>
+            <td class="ansatt-s">${bruker.ansattS || ''}</td>
+            <td class="actions">
+                <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
+                    ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
                 </button>
             </td>
         `;
+
+        // Oppdater celler med klassen 'opptatt' hvis ansattD eller ansattS er fylt ut
+        if (bruker.ansattD) {
+            row.cells[1].classList.add('opptatt');
+            row.cells[2].classList.add('opptatt');
+        }
+        if (bruker.ansattS) {
+            row.cells[3].classList.add('opptatt');
+            row.cells[4].classList.add('opptatt');
+        }
 
         fragment.appendChild(row);
     });
@@ -43,39 +56,39 @@ function oppdaterBrukerListe(brukere) {
     brukerListe.appendChild(fragment);
 }
 
-// Finn den første ledige brukeren i listen
-function finnForsteLedigeBruker(brukere) {
-    return brukere.find(bruker => bruker.status === 'Ledig');
+// Finn den første ledige brukeren for en gitt type
+function finnFørsteLedigeBruker(brukere, type) {
+    return brukere.find(bruker => {
+        return (type === 'desktop' && !bruker.ansattD) || 
+               (type === 'skannemodul' && !bruker.ansattS);
+    });
 }
 
-// Håndter bruker basert på status
-async function håndterBruker(brukerId) {
+// Håndter bruker basert på status og type
+async function håndterBruker(brukerId, type) {
     try {
-        // Hent alle brukere
         const response = await fetch(`${BASE_URL}/brukere`);
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
-        // Hent rad for den valgte brukeren
+        const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
+
+        if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId) {
+            alert(`Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.`);
+            return;
+        }
+
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
             alert('Brukeren finnes ikke.');
             return;
         }
 
-        // Hent status på den valgte brukeren
-        const statusCell = row.cells[1]; // Forutsatt at statusen er i den andre cellen
-        const brukerStatus = statusCell.textContent.trim();
+        const ansattCell = type === 'desktop' ? row.cells[1] : row.cells[3];
+        const statusCell = type === 'desktop' ? row.cells[2] : row.cells[4];
+        const ansattNavn = ansattCell.textContent.trim();
 
-        // Hvis brukeren er "Ledig", sjekk om det er den første ledige brukeren
-        if (brukerStatus === 'Ledig') {
-            const forsteLedigeBruker = finnForsteLedigeBruker(brukere);
-
-            if (forsteLedigeBruker && forsteLedigeBruker.id !== brukerId) {
-                alert(`Vennligst ta den første ledige brukeren: ${forsteLedigeBruker.navn}.`);
-                return;
-            }
-
+        if (!ansattNavn) {
             const ansatt = prompt('Vennligst skriv inn ditt navn:');
             if (ansatt) {
                 const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
@@ -86,7 +99,7 @@ async function håndterBruker(brukerId) {
                     body: JSON.stringify({
                         brukerId: brukerId,
                         ansatt: ansatt,
-                        aksjon: 'ta'
+                        aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
                     })
                 });
 
@@ -96,10 +109,8 @@ async function håndterBruker(brukerId) {
                     alert('Noe gikk galt med å ta brukeren.');
                 }
             }
-        } else if (brukerStatus === 'Opptatt') {
-            const ansattNavn = hentAnsattNavn(brukerId);
-            const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}? Husk at du ikke må frigjøre brukere som benyttes av andre.`);
-
+        } else {
+            const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
             if (bekreftelse) {
                 const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
                     method: 'POST',
@@ -108,7 +119,7 @@ async function håndterBruker(brukerId) {
                     },
                     body: JSON.stringify({
                         brukerId: brukerId,
-                        aksjon: 'frigjør'
+                        aksjon: type === 'desktop' ? 'frigjørDesktop' : 'frigjørSkannemodul'
                     })
                 });
 
@@ -118,20 +129,11 @@ async function håndterBruker(brukerId) {
                     alert('Noe gikk galt med å frigjøre brukeren.');
                 }
             }
-        } else {
-            alert('Ukjent status.');
         }
     } catch (error) {
         console.error('Feil ved oppdatering:', error);
         alert('Noe gikk galt med forespørselen.');
     }
-}
-
-// Hent ansatt-navn fra tabellen basert på bruker-ID
-function hentAnsattNavn(brukerId) {
-    const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
-    const ansattCell = row ? row.cells[2] : null;
-    return ansattCell ? ansattCell.textContent.trim() : '';
 }
 
 // Initialiser ved å hente brukere når siden lastes
