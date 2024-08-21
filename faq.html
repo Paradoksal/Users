@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - Ongoing Brukerhåndtering</title>
+    <title>FAQ - Ongoing Brukertildeling</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
+            line-height: 1.8;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -15,16 +15,17 @@
         header {
             background: #333;
             color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
+            padding: 20px;
             border-bottom: #fff 3px solid;
             text-align: center;
         }
         header h1 {
             margin: 0;
+            font-size: 1.8em;
         }
         .container {
-            width: 80%;
+            width: 95%;
+            max-width: 1200px;
             margin: auto;
             overflow: hidden;
         }
@@ -32,11 +33,12 @@
             background: #007bff;
             color: #fff;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
             text-decoration: none;
             display: block;
             margin: 20px 0;
+            font-size: 1.1em;
         }
         .back-to-overview:hover {
             background: #0056b3;
@@ -45,12 +47,13 @@
             background: #fff;
             padding: 20px;
             margin-top: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .index h2 {
             margin-top: 0;
-            font-size: 1.2em; /* Litt mindre enn standard størrelse */
+            font-size: 1.4em;
+            color: #333;
         }
         .index ul {
             list-style: none;
@@ -61,7 +64,8 @@
         }
         .index ul li a {
             text-decoration: none;
-            color: #333;
+            color: #007bff;
+            font-size: 1.1em;
         }
         .index ul li a:hover {
             text-decoration: underline;
@@ -70,37 +74,39 @@
             background: #fff;
             padding: 20px;
             margin-top: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .faq h2 {
-            background: #eee;
-            padding: 10px;
+            background: #f8f9fa;
+            padding: 12px;
             margin: 0;
             border-bottom: #ddd 1px solid;
-            font-size: 1.2em; /* Litt mindre enn standard størrelse */
+            font-size: 1.3em; /* Justert størrelse */
+            color: #007bff;
         }
         .faq p {
-            padding: 10px;
-            margin: 0;
+            margin: 20px 0;
+            color: #555;
         }
         .contact {
             background: #fff;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
         .contact h2 {
-            background: #eee;
-            padding: 10px;
+            background: #f8f9fa;
+            padding: 12px;
             margin: 0;
             border-bottom: #ddd 1px solid;
-            font-size: 1.2em; /* Litt mindre enn standard størrelse */
+            font-size: 1.3em; /* Justert størrelse */
+            color: #007bff;
         }
         .contact p {
-            padding: 10px;
-            margin: 0;
+            margin: 20px 0;
+            color: #555;
         }
     </style>
 </head>
@@ -127,7 +133,10 @@
 
         <div class="faq">
             <h2 id="user_access">Hvorfor kan jeg ikke bare ha min egen bruker jeg alltid kan logge inn med?</h2>
-            <p>Ongoing har en prisstruktur der man blir belastet for antall brukere som har vært pålogget i løpet av en måned. Jo flere brukere som har vært pålogget, desto høyere blir kostnaden for den måneden. Derfor er det økonomisk fordelaktig at flere ansatte deler på de samme brukerne, i stedet for at hver fulltids-, deltids- og vikaransatt har sin egen bruker som medfører ekstra kostnader. Husk derfor å frigjøre brukeren du har benyttet hvis du for eksempel slutter tidligere på dagen. Alle brukere blir automatisk frigjort kl. 17:00. Merk: Denne begrensningen gjelder kun for Ongoing WMS. Andre systemer vi bruker, har ikke nødvendigvis den samme prisstrukturen og dermed ikke den samme begrensningen. Som for eks. eManager for AutoStore hvor alle har hver sin unike bruker.</p>
+            <p>Ongoing har en prisstruktur der man blir belastet for antall brukere som har vært pålogget i løpet av en måned. Jo flere brukere som har vært pålogget, desto høyere blir kostnaden for den måneden.</p>
+            <p>Derfor er det økonomisk fordelaktig at flere ansatte deler på de samme brukerne, i stedet for at hver fulltids-, deltids- og vikaransatt har sin egen bruker som medfører ekstra kostnader.</p>
+            <p>Husk derfor å frigjøre brukeren du har benyttet hvis du for eksempel slutter tidligere på dagen. Alle brukere blir automatisk frigjort kl. 17:00.</p>
+            <p>Merk: Denne begrensningen gjelder kun for Ongoing WMS. Andre systemer vi bruker, har ikke nødvendigvis den samme prisstrukturen og dermed ikke den samme begrensningen. Som for eks. eManager for AutoStore hvor alle har hver sin unike bruker.</p>
 
             <h2 id="cost">Det kan da ikke være så stor kostnad bare for en bruker?</h2>
             <p>Fra 2000,- hver måned, som er årsaken til at det er ønskelig å begrense antallet.</p>
@@ -142,15 +151,18 @@
             <p>Du åpner opp login siden til Ongoing som du gjør til vanlig og logger inn med Bruker ID du tok. Brukernavnet er da for eks. «Bruker 01». Passordet er likt på alle brukere: «Colliflow2024».</p>
 
             <h2 id="card_solution">Hva med kort-løsningen vi hadde før?</h2>
-            <p>Kort løsningen var tenkt å ha samme funksjon som denne oversikten, men det har ikke fungert som ønsket da folk har beholdt kort ved faste stasjoner som virker mot sin hensikt med å kunne dele på brukere. Informasjonen på kortene er utgått og du vil ikke få logget inn med disse lenger, alle kort du har liggende, hengende, eller skulle finne, kan destrueres.</p>
+            <p>Kort løsningen var tenkt å ha samme funksjon som denne oversikten, men det har ikke fungert som ønsket da folk har beholdt kort ved faste stasjoner som virker mot sin hensikt med å kunne dele på brukere.</p>
+            <p>Informasjonen på kortene er utgått og du vil ikke få logget inn med disse lenger, alle kort du har liggende, hengende, eller skulle finne, kan destrueres.</p>
 
             <h2 id="desktop_scan">Hvorfor har hver bruker en "Desktop" og en "Skann" man kan ta?</h2>
-            <p>Ongoing har to forskjellige grensesnitt, et desktop grensesnitt og en skannemodul. Det er tillatt å være logget inn med samme bruker både i desktop grensesnittet og i skannemodul. Hvis du skal jobbe i Ongoing på en PC (for eks. på en arbeidsstasjon hvor du pakker ordre) så tar du en desktop bruker fra oversikten. En annen ansatt som skal jobbe med en håndholdt skanner (for eks. for å plukke ordre) kan da ta Skann bruker med samme Bruker ID uten at det skaper en konflikt. På den måten kan man begrense behovet for unike brukere i Ongoing.</p>
+            <p>Ongoing har to forskjellige grensesnitt, et desktop grensesnitt og en skannemodul. Det er tillatt å være logget inn med samme bruker både i desktop grensesnittet og i skannemodul.</p>
+            <p>Hvis du skal jobbe i Ongoing på en PC (for eks. på en arbeidsstasjon hvor du pakker ordre) så tar du en desktop bruker fra oversikten. En annen ansatt som skal jobbe med en håndholdt skanner (for eks. for å plukke ordre) kan da ta Skann bruker med samme Bruker ID uten at det skaper en konflikt.</p>
+            <p>På den måten kan man begrense behovet for unike brukere i Ongoing.</p>
         </div>
 
         <div class="contact">
             <h2>Jeg har fortsatt noen spørsmål</h2>
-            <p>Spørsmål eller forslag til forbedringer kan rettes til Glenn André.</p>
+            <p>Spørsmål eller forslag til forbedringer kan rettes til Glenn André</p>
         </div>
     </div>
 </body>
