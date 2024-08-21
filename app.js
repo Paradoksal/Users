@@ -71,13 +71,6 @@ async function håndterBruker(brukerId, type) {
         if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
-        const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
-
-        if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId) {
-            alert(`Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.`);
-            return;
-        }
-
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
             alert('Brukeren finnes ikke.');
@@ -89,6 +82,14 @@ async function håndterBruker(brukerId, type) {
         const ansattNavn = ansattCell.textContent.trim();
 
         if (!ansattNavn) {
+            // Dette skjer når brukeren er ledig og du vil "ta" den.
+            const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
+
+            if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId) {
+                alert(`Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.`);
+                return;
+            }
+
             const ansatt = prompt('Vennligst skriv inn ditt navn:');
             if (ansatt) {
                 const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
@@ -110,6 +111,7 @@ async function håndterBruker(brukerId, type) {
                 }
             }
         } else {
+            // Dette skjer når brukeren er opptatt og du vil frigjøre den.
             const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
             if (bekreftelse) {
                 const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
