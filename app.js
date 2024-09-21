@@ -24,8 +24,8 @@ function oppdaterBrukerListe(brukere) {
         const row = document.createElement('tr');
         row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
-        row.innerHTML = `
-            <td>${bruker.navn}</td>
+        row.innerHTML = 
+            `<td>${bruker.navn}</td>
             <td class="ansatt-d">${bruker.ansattD || ''}</td>
             <td class="actions">
                 <button onclick="håndterBruker(${bruker.id}, 'desktop')">
@@ -37,8 +37,7 @@ function oppdaterBrukerListe(brukere) {
                 <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
                     ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
                 </button>
-            </td>
-        `;
+            </td>`;
 
         // Oppdater celler med klassen 'opptatt' hvis ansattD eller ansattS er fylt ut
         if (bruker.ansattD) {
@@ -85,7 +84,9 @@ async function håndterBruker(brukerId, type) {
             // Dette skjer når brukeren er ledig og du vil "ta" den.
             const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
 
-            if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId) {
+            const erAdmin = row.cells[0].textContent.trim().includes("Admin");
+
+            if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId && !erAdmin) {
                 alert(`Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.`);
                 return;
             }
