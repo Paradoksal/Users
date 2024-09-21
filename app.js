@@ -3,8 +3,8 @@ const BASE_URL = 'https://node-red.cloudflareno.de/api';
 // Hent brukere fra backend og oppdater tabellen
 async function hentBrukere() {
     try {
-        const response = await fetch(`${BASE_URL}/brukere`);
-        if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
+        const response = await fetch(${BASE_URL}/brukere);
+        if (!response.ok) throw new Error(HTTP-feil! Status: ${response.status});
         const brukere = await response.json();
         oppdaterBrukerListe(brukere);
     } catch (error) {
@@ -24,7 +24,7 @@ function oppdaterBrukerListe(brukere) {
         const row = document.createElement('tr');
         row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
-        row.innerHTML = `
+        row.innerHTML = 
             <td>${bruker.navn}</td>
             <td class="ansatt-d">${bruker.ansattD || ''}</td>
             <td class="actions">
@@ -38,7 +38,7 @@ function oppdaterBrukerListe(brukere) {
                     ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
                 </button>
             </td>
-        `;
+        ;
 
         // Oppdater celler med klassen 'opptatt' hvis ansattD eller ansattS er fylt ut
         if (bruker.ansattD) {
@@ -66,87 +66,75 @@ function finnFørsteLedigeBruker(brukere, type) {
 
 // Håndter bruker basert på status og type
 async function håndterBruker(brukerId, type) {
-    const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
-    if (!row) {
-        alert('Brukeren finnes ikke.');
-        return;
-    }
+    try {
+        const response = await fetch(${BASE_URL}/brukere);
+        if (!response.ok) throw new Error(HTTP-feil! Status: ${response.status});
+        const brukere = await response.json();
 
-    const ansattCell = type === 'desktop' ? row.cells[1] : row.cells[3];
-    const statusCell = type === 'desktop' ? row.cells[2] : row.cells[4];
-    const ansattNavn = ansattCell.textContent.trim();
-
-    if (!ansattNavn) {
-        // Brukeren er ledig, ta den
-        const ansatt = prompt('Vennligst skriv inn ditt navn:');
-        if (ansatt) {
-            // Oppdater UI umiddelbart
-            ansattCell.textContent = ansatt;
-            statusCell.textContent = 'Opptatt';
-            row.cells[2].classList.add('opptatt');
-
-            // Send forespørsel til backend
-            fetch(`${BASE_URL}/oppdater`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    brukerId: brukerId,
-                    ansatt: ansatt,
-                    aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP-feil! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .catch(error => {
-                console.error('Oppdateringsfeil:', error);
-                alert('Noe gikk galt med å ta brukeren.');
-                // Tilbakestill UI hvis det feiler
-                ansattCell.textContent = '';
-                statusCell.textContent = 'Ledig';
-                row.cells[2].classList.remove('opptatt');
-            });
+        const row = document.querySelector(tr[data-bruker-id="${brukerId}"]);
+        if (!row) {
+            alert('Brukeren finnes ikke.');
+            return;
         }
-    } else {
-        // Brukeren er opptatt, frigjør den
-        const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
-        if (bekreftelse) {
-            // Oppdater UI umiddelbart
-            ansattCell.textContent = '';
-            statusCell.textContent = 'Ledig';
-            row.cells[2].classList.remove('opptatt');
 
-            // Send forespørsel til backend
-            fetch(`${BASE_URL}/oppdater`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    brukerId: brukerId,
-                    aksjon: type === 'desktop' ? 'frigjørDesktop' : 'frigjørSkannemodul'
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP-feil! Status: ${response.status}`);
+        const ansattCell = type === 'desktop' ? row.cells[1] : row.cells[3];
+        const statusCell = type === 'desktop' ? row.cells[2] : row.cells[4];
+        const ansattNavn = ansattCell.textContent.trim();
+
+        if (!ansattNavn) {
+            // Dette skjer når brukeren er ledig og du vil "ta" den.
+            const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
+
+            if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId) {
+                alert(Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.);
+                return;
+            }
+
+            const ansatt = prompt('Vennligst skriv inn ditt navn:');
+            if (ansatt) {
+                const updateResponse = await fetch(${BASE_URL}/oppdater, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        brukerId: brukerId,
+                        ansatt: ansatt,
+                        aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    hentBrukere();
+                } else {
+                    alert('Noe gikk galt med å ta brukeren.');
                 }
-                return response.json();
-            })
-            .catch(error => {
-                console.error('Oppdateringsfeil:', error);
-                alert('Noe gikk galt med å frigjøre brukeren.');
-                // Tilbakestill UI hvis det feiler
-                ansattCell.textContent = ansattNavn; // Gjenopprett det originale navnet
-                statusCell.textContent = 'Opptatt'; // Gjenopprett status
-                row.cells[2].classList.add('opptatt');
-            });
+            }
+        } else {
+            // Dette skjer når brukeren er opptatt og du vil frigjøre den.
+            const bekreftelse = confirm(Er du sikker på at du vil frigjøre ${ansattNavn}?);
+            if (bekreftelse) {
+                const updateResponse = await fetch(${BASE_URL}/oppdater, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        brukerId: brukerId,
+                        aksjon: type === 'desktop' ? 'frigjørDesktop' : 'frigjørSkannemodul'
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    hentBrukere();
+                } else {
+                    alert('Noe gikk galt med å frigjøre brukeren.');
+                }
+            }
         }
+    } catch (error) {
+        console.error('Feil ved oppdatering:', error);
+        alert('Noe gikk galt med forespørselen.');
     }
 }
 
