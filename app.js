@@ -3,7 +3,7 @@ const BASE_URL = 'https://node-red.cloudflareno.de/api';
 // Hent brukere fra backend og oppdater tabellen
 async function hentBrukere() {
     try {
-        const response = await fetch(${BASE_URL}/brukere);
+        const response = await fetch(`${BASE_URL}/brukere`);
         if (!response.ok) throw new Error(HTTP-feil! Status: ${response.status});
         const brukere = await response.json();
         oppdaterBrukerListe(brukere);
