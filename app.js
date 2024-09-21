@@ -4,7 +4,7 @@ const BASE_URL = 'https://node-red.cloudflareno.de/api';
 async function hentBrukere() {
     try {
         const response = await fetch(`${BASE_URL}/brukere`);
-        if (!response.ok) throw new Error(HTTP-feil! Status: ${response.status});
+        if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
         oppdaterBrukerListe(brukere);
     } catch (error) {
@@ -24,21 +24,21 @@ function oppdaterBrukerListe(brukere) {
         const row = document.createElement('tr');
         row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
-row.innerHTML = `
-    <td>${bruker.navn}</td>
-    <td class="ansatt-d">${bruker.ansattD || ''}</td>
-    <td class="actions">
-        <button onclick="håndterBruker(${bruker.id}, 'desktop')">
-            ${bruker.ansattD ? 'Frigjør Bruker' : 'Ta Bruker'}
-        </button>
-    </td>
-    <td class="ansatt-s">${bruker.ansattS || ''}</td>
-    <td class="actions">
-        <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
-            ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
-        </button>
-    </td>
-`;
+        row.innerHTML = `
+            <td>${bruker.navn}</td>
+            <td class="ansatt-d">${bruker.ansattD || ''}</td>
+            <td class="actions">
+                <button onclick="håndterBruker(${bruker.id}, 'desktop')">
+                    ${bruker.ansattD ? 'Frigjør Bruker' : 'Ta Bruker'}
+                </button>
+            </td>
+            <td class="ansatt-s">${bruker.ansattS || ''}</td>
+            <td class="actions">
+                <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
+                    ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
+                </button>
+            </td>
+        `;
 
         // Oppdater celler med klassen 'opptatt' hvis ansattD eller ansattS er fylt ut
         if (bruker.ansattD) {
@@ -67,11 +67,11 @@ function finnFørsteLedigeBruker(brukere, type) {
 // Håndter bruker basert på status og type
 async function håndterBruker(brukerId, type) {
     try {
-        const response = await fetch(${BASE_URL}/brukere);
-        if (!response.ok) throw new Error(HTTP-feil! Status: ${response.status});
+        const response = await fetch(`${BASE_URL}/brukere`);
+        if (!response.ok) throw new Error(`HTTP-feil! Status: ${response.status}`);
         const brukere = await response.json();
 
-        const row = document.querySelector(tr[data-bruker-id="${brukerId}"]);
+        const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
         if (!row) {
             alert('Brukeren finnes ikke.');
             return;
@@ -86,13 +86,13 @@ async function håndterBruker(brukerId, type) {
             const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
 
             if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId) {
-                alert(Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.);
+                alert(`Du må ta den første ledige ${type === 'desktop' ? 'Desktop' : 'Skannemodul'} brukeren.`);
                 return;
             }
 
             const ansatt = prompt('Vennligst skriv inn ditt navn:');
             if (ansatt) {
-                const updateResponse = await fetch(${BASE_URL}/oppdater, {
+                const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -112,9 +112,9 @@ async function håndterBruker(brukerId, type) {
             }
         } else {
             // Dette skjer når brukeren er opptatt og du vil frigjøre den.
-            const bekreftelse = confirm(Er du sikker på at du vil frigjøre ${ansattNavn}?);
+            const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
             if (bekreftelse) {
-                const updateResponse = await fetch(${BASE_URL}/oppdater, {
+                const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
