@@ -3,110 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - Ongoing Brukertildeling</title>
+    <title>Ofte stilte spørsmål</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.8;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background: #333;
-            color: #fff;
-            padding: 20px;
-            border-bottom: #fff 3px solid;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 1.8em;
-        }
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            margin: auto;
-            overflow: hidden;
-        }
-        .back-to-overview {
-            background: #C3351A;
-            color: #fff;
-            text-align: center;
-            padding: 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: block;
-            margin: 20px 0;
-            font-size: 1.1em;
-        }
-        .back-to-overview:hover {
-            background: #0056b3;
-        }
-        .index {
-            background: #fff;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        .index h2 {
-            margin-top: 0;
-            font-size: 1.4em;
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
             color: #333;
         }
-        .index ul {
-            list-style: none;
-            padding: 0;
+        h1 {
+            color: #2c3e50;
+            text-align: center;
         }
-        .index ul li {
+        h2 {
+            color: #3498db;
+            font-size: 1.2em; /* Mindre overskrift */
+            margin: 0;
+        }
+        p {
+            text-align: left;
             margin: 10px 0;
         }
-        .index ul li a {
-            text-decoration: none;
-            color: #C3351A;
-            font-size: 1.1em;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
         }
-        .index ul li a:hover {
+        .back-to-overview {
+            display: block;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .back-to-overview:hover {
             text-decoration: underline;
         }
-        .faq {
-            background: #fff;
-            padding: 20px;
-            margin-top: 20px;
+        .faq-item {
+            border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        .faq h2 {
-            background: #f8f9fa;
-            padding: 12px;
-            margin: 0;
-            border-bottom: #ddd 1px solid;
-            font-size: 1.3em; /* Justert størrelse */
-            color: #C3351A;
-        }
-        .faq p {
-            margin: 20px 0;
-            color: #555;
-        }
-        .contact {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-        .contact h2 {
-            background: #f8f9fa;
-            padding: 12px;
-            margin: 0;
-            border-bottom: #ddd 1px solid;
-            font-size: 1.3em; /* Justert størrelse */
-            color: #C3351A;
-        }
-        .contact p {
-            margin: 20px 0;
-            color: #555;
+            padding: 15px;
+            margin: 15px 0; /* Større mellomrom mellom spørsmålene */
+            background-color: #f7f9fc;
         }
     </style>
 </head>
@@ -119,47 +60,48 @@
         <a href="index.html" class="back-to-overview">Tilbake til brukeroversikt</a>
 
         <div class="faq">
+            <div class="faq-item">
+                <h2 id="overview">Hva er dette for noe?</h2>
+                <p>Dette er en brukertildelingsoversikt over hvem som benytter hvilken bruker i Ongoing WMS.</p>
+            </div>
 
-            <h2 id="overview">Hva er dette for noe?</h2>
-            <p>Dette er en brukertildelingsoversikt over hvem som benytter hvilken bruker i Ongoing WMS.</p>
+            <div class="faq-item">
+                <h2 id="cost">Hva er poenget med det?</h2>
+                <p>For å begrense antall brukere som har vært logget inn i løpet av en måned. Ongoing har en prisstruktur der man blir belastet for antall brukere som har vært pålogget i løpet av en måned. Jo flere brukere som har vært pålogget, desto høyere blir kostnaden for den måneden.</p>
+                <p>Derfor er det økonomisk fordelaktig at flere ansatte deler på de samme brukerne, i stedet for at hver fulltids-, deltids- og vikaransatt har sin egen bruker som medfører ekstra kostnader.</p>
+                <p>Husk å frigjøre brukeren du har benyttet hvis du for eksempel slutter tidligere på dagen. Alle brukere blir automatisk frigjort kl. 17:00.</p>
+                <p>Merk: Denne begrensningen gjelder kun for Ongoing WMS. Andre systemer vi bruker, har ikke nødvendigvis den samme prisstrukturen og dermed ikke den samme begrensningen, som for eksempel eManager for AutoStore hvor alle har hver sin unike bruker.</p>
+            </div>
 
-            <h2 id="overview">Hva er poenget med det?</h2>
-            <p>For å begrense antall brukere som har vært logget inn i løpet av en måned.</p>
-            <p>Ongoing har en prisstruktur der man blir belastet for antall brukere som har vært pålogget i løpet av en måned. Jo flere brukere som har vært pålogget, desto høyere blir kostnaden for den måneden.</p>
-            <p>Derfor er det økonomisk fordelaktig at flere ansatte deler på de samme brukerne, i stedet for at hver fulltids-, deltids- og vikaransatt har sin egen bruker som medfører ekstra kostnader.</p>
-            <p>Husk derfor å frigjøre brukeren du har benyttet hvis du for eksempel slutter tidligere på dagen. Alle brukere blir automatisk frigjort kl. 17:00.</p>
-            <p>Merk: Denne begrensningen gjelder kun for Ongoing WMS. Andre systemer vi bruker, har ikke nødvendigvis den samme prisstrukturen og dermed ikke den samme begrensningen. Som for eks. eManager for AutoStore hvor alle har hver sin unike bruker.</p>
+            <div class="faq-item">
+                <h2 id="shared_user">Kan vi ikke da bare ha én bruker som alle kan bruke?</h2>
+                <p>Nei, hvis du jobber i Ongoing og noen logger inn med samme bruker et annet sted, så blir du kastet ut.</p>
+            </div>
 
-            <h2 id="cost">Det kan da ikke være så stor kostnad bare for en bruker?</h2>
-            <p>Fra 2000,- hver måned, som er årsaken til at det er ønskelig å begrense antallet.</p>
-            <p>Det blir store besparelser hvert år ved å klare å begrense antall aktive brukere</p>
+            <div class="faq-item">
+                <h2 id="using">Hvordan skal jeg bruke dette?</h2>
+                <p>Hvis du skal gjøre en jobb som krever Ongoing tilgang, må du først sjekke denne listen og «ta en» ledig bruker, for å indikere for alle andre at nå er denne brukeren opptatt.</p>
+            </div>
 
-            <h2 id="shared_user">Kan vi ikke da bare ha én bruker som alle kan bruke?</h2>
-            <p>Nei, hvis du jobber i Ongoing og noen logger inn med samme bruker et annet sted så blir du kastet ut.</p>
-            <p>Med et unntak hvor to personer faktisk kan være logget inn i Ongoings forskjellige grensesnitt samtidig, forklart nærmere under her</p>
+            <div class="faq-item">
+                <h2 id="login">Hvordan logger jeg inn i Ongoing etter at jeg har tatt en ledig bruker?</h2>
+                <p>Du åpner opp login siden til Ongoing som du gjør til vanlig, fra bokmerkeraden i nettleseren eller appen på skanner eller nettbrett.</p>
+            </div>
 
-            <h2 id="using">Hvordan skal jeg bruke dette?</h2>
-            <p>Hvis du skal gjøre en jobb som krever Ongoing tilgang så må du først sjekke denne listen og «ta en» ledig bruker, for å indikere for alle andre at nå er denne brukeren opptatt.</p>
+            <div class="faq-item">
+                <h2 id="card_solution">Hva med kort-løsningen vi hadde før?</h2>
+                <p>Kort løsningen var tenkt å ha samme funksjon som denne oversikten med å begrense brukere, men det har ikke fungert som ønsket da folk har beholdt kort ved faste stasjoner, som virker mot sin hensikt med å kunne dele på brukere.</p>
+            </div>
 
-            <h2 id="login">Hvordan logger jeg inn i Ongoing etter at jeg har tatt en ledig bruker?</h2>
-            <p>Du åpner opp login siden til Ongoing som du gjør til vanlig, fra bokmerkeraden i nettleseren eller appen på skanner eller nettbrett.</p>
-            <p>Dersom alt har blitt klargjort på stasjonen din så vil Brukernavn feltet allerede være fylt ut med "Bruker", og riktig passord ferdig utfylt.</p>
-            <p>Alt du trenger å gjøre er å fylle inn ID på brukeren din på slutten av brukernavnet, for eks "01" slik at brukernavnet blir "Bruker01", velg arbeidsstasjon, og logg inn.</p>
-            <p>Om arbeidsstasjonen eller den håndholdte skanneren din ikke er satt opp korrekt, ta kontakt med Glenn André</p>
-
-            <h2 id="card_solution">Hva med kort-løsningen vi hadde før?</h2>
-            <p>Kort løsningen var tenkt å ha samme funksjon som denne oversikten med å begrense brukere, men det har ikke fungert som ønsket da folk har beholdt kort ved faste stasjoner som virker mot sin hensikt med å kunne dele på brukere.</p>
-            <p>Informasjonen på kortene er utgått og du vil ikke få logget inn med disse lenger, alle kort du har liggende, hengende, eller skulle finne, kan destrueres.</p>
-
-            <h2 id="desktop_scan">Hvorfor har hver bruker en "Desktop" og en "Skann" man kan ta?</h2>
-            <p>Ongoing har to forskjellige grensesnitt, et desktop (datamaskin) grensesnitt og en skannemodul. Det er tillatt å være logget inn med samme bruker både i desktop grensesnittet og i skannemodul.</p>
-            <p>Hvis du skal jobbe i Ongoing på en PC (for eks. på en arbeidsstasjon hvor du pakker ordre) så tar du en desktop bruker fra oversikten. En annen ansatt som skal jobbe med en håndholdt skanner (for eks. for å plukke ordre) kan da ta en Skann bruker med samme Bruker ID uten at det skaper en konflikt.</p>
-            <p>På den måten kan man begrense behovet for unike brukere i Ongoing.</p>
+            <div class="faq-item">
+                <h2 id="desktop_scan">Hvorfor har hver bruker en "Desktop" og en "Skann" man kan ta?</h2>
+                <p>Ongoing har to forskjellige grensesnitt: et desktop (datamaskin) grensesnitt og en skannemodul. Det er tillatt å være logget inn med samme bruker både i desktop grensesnittet og i skannemodul.</p>
+            </div>
         </div>
 
         <div class="contact">
             <h2>Jeg har fortsatt noen spørsmål</h2>
-            <p>Spørsmål eller forslag til forbedringer kan rettes til Glenn André</p>
+            <p>Spørsmål eller forslag til forbedringer kan rettes til Glenn André.</p>
         </div>
     </div>
 </body>
