@@ -6,29 +6,77 @@
     <title>Brukertildeling for Ongoing WMS</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        p {
+            text-align: center;
         }
         table {
-            width: 100%;
+            width: 80%; /* Set the overall width of the table */
+            max-width: 800px; /* Optional max width */
+            margin: 20px auto; /* Center the table */
             border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         table, th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
         }
         th, td {
-            padding: 8px;
+            padding: 12px;
             text-align: left;
         }
         th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e1e1e1;
         }
         .opptatt {
             background-color: #f2dede;
         }
         .actions {
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            align-items: center; /* Vertikalt sentralisert */
+            padding: 0; /* Fjerner padding */
+            margin: 0; /* Fjerner margin */
+            min-height: 50px; /* Juster høyden etter behov */
+        }
+        .actions button {
+            width: auto; /* Gjør knappen smalere */
+            padding: 5px 10px; /* Legger til litt padding for bedre utseende */
+            background-color: #3498db; /* Valgfri farge */
+            color: white; /* Valgfri tekstfarge */
+            border: none; /* Fjerner kantlinje */
+            cursor: pointer; /* Endrer musepekeren */
+            border-radius: 25px; /* Runder hjørnene på knappen */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Legger til en subtil skygge */
+            transition: background-color 0.3s, box-shadow 0.3s; /* Legger til en overgangseffekt */
+        }
+        .actions button:hover {
+            background-color: #2980b9; /* Farge ved hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Forsterker skyggen ved hover */
+        }
+        a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        th:first-child {
+            width: 150px; /* Set the width of the "Bruker" column */
         }
     </style>
 </head>
