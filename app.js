@@ -105,8 +105,11 @@ async function håndterBruker(brukerId, type) {
                 });
 
                 if (updateResponse.ok) {
-                    hentBrukere();
+                    console.log('Brukeren ble oppdatert: ', brukerId);
+                    hentBrukere(); // Hent oppdaterte brukere
                 } else {
+                    const errorText = await updateResponse.text();
+                    console.error('Oppdateringsfeil:', errorText);
                     alert('Noe gikk galt med å ta brukeren.');
                 }
             }
@@ -126,8 +129,11 @@ async function håndterBruker(brukerId, type) {
                 });
 
                 if (updateResponse.ok) {
-                    hentBrukere();
+                    console.log('Brukeren ble frigjort: ', brukerId);
+                    hentBrukere(); // Hent oppdaterte brukere
                 } else {
+                    const errorText = await updateResponse.text();
+                    console.error('Oppdateringsfeil:', errorText);
                     alert('Noe gikk galt med å frigjøre brukeren.');
                 }
             }
