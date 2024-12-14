@@ -93,8 +93,11 @@ async function håndterBruker(brukerId, type) {
 
 const ansatt = prompt('Vennligst skriv inn ditt navn:');
 if (ansatt) {
-    // Gjør første bokstav stor
-    const riktigNavn = ansatt.charAt(0).toUpperCase() + ansatt.slice(1).toLowerCase();
+    // Gjør første bokstav i hvert ord stor
+    const riktigNavn = ansatt
+        .split(' ') // Del navnet i ord
+        .map(ord => ord.charAt(0).toUpperCase() + ord.slice(1).toLowerCase()) // Gjør første bokstav stor og resten liten
+        .join(' '); // Sett sammen ordet igjen med mellomrom
 
     const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
         method: 'POST',
