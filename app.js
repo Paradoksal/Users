@@ -93,11 +93,20 @@ async function håndterBruker(brukerId, type) {
 
 const ansatt = prompt('Vennligst skriv inn ditt navn:');
 if (ansatt) {
-    // Del navnet i ord og gjør første bokstav i hvert ord stor, resten små
-    const riktigNavn = ansatt
-        .split(' ') // Del navnet i ord
-        .map(ord => ord.charAt(0).toUpperCase() + ord.slice(1).toLowerCase()) // Gjør første bokstav stor og resten liten
-        .join(' '); // Sett sammen ordet igjen med mellomrom
+    // Del navnet i ord
+    const ord = ansatt.split(' ');
+    console.log('Splittede ord:', ord); // Logg ut de splittede ordene
+
+    // Gjør første bokstav stor for hvert ord, men la resten være som det er
+    const riktigNavn = ord
+        .map(ord => {
+            const capitalized = ord.charAt(0).toUpperCase() + ord.slice(1); // Ikke gjør resten til små bokstaver
+            console.log(`Originalt ord: ${ord}, Endret ord: ${capitalized}`);
+            return capitalized;
+        })
+        .join(' ');
+
+    console.log('Riktig navn:', riktigNavn); // Logg ut resultatet
 
     const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
         method: 'POST',
@@ -110,13 +119,6 @@ if (ansatt) {
             aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
         })
     });
-
-    if (updateResponse.ok) {
-        hentBrukere();
-    } else {
-        alert('Noe gikk galt med å ta brukeren.');
-    }
-}
 
     if (updateResponse.ok) {
         hentBrukere();
