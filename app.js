@@ -93,7 +93,7 @@ async function håndterBruker(brukerId, type) {
 
 const ansatt = prompt('Vennligst skriv inn ditt navn:');
 if (ansatt) {
-    // Gjør første bokstav i hvert ord stor
+    // Del navnet i ord og gjør første bokstav i hvert ord stor, resten små
     const riktigNavn = ansatt
         .split(' ') // Del navnet i ord
         .map(ord => ord.charAt(0).toUpperCase() + ord.slice(1).toLowerCase()) // Gjør første bokstav stor og resten liten
@@ -110,6 +110,13 @@ if (ansatt) {
             aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
         })
     });
+
+    if (updateResponse.ok) {
+        hentBrukere();
+    } else {
+        alert('Noe gikk galt med å ta brukeren.');
+    }
+}
 
     if (updateResponse.ok) {
         hentBrukere();
