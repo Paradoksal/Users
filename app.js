@@ -91,26 +91,29 @@ async function håndterBruker(brukerId, type) {
                 return;
             }
 
-            const ansatt = prompt('Vennligst skriv inn ditt navn:');
-            if (ansatt) {
-                const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        brukerId: brukerId,
-                        ansatt: ansatt,
-                        aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
-                    })
-                });
+const ansatt = prompt('Vennligst skriv inn ditt navn:');
+if (ansatt) {
+    // Gjør første bokstav stor
+    const riktigNavn = ansatt.charAt(0).toUpperCase() + ansatt.slice(1).toLowerCase();
 
-                if (updateResponse.ok) {
-                    hentBrukere();
-                } else {
-                    alert('Noe gikk galt med å ta brukeren.');
-                }
-            }
+    const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            brukerId: brukerId,
+            ansatt: riktigNavn,
+            aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
+        })
+    });
+
+    if (updateResponse.ok) {
+        hentBrukere();
+    } else {
+        alert('Noe gikk galt med å ta brukeren.');
+    }
+}
         } else {
             // Dette skjer når brukeren er opptatt og du vil frigjøre den.
             const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
