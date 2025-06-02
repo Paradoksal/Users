@@ -24,21 +24,20 @@ function oppdaterBrukerListe(brukere) {
         const row = document.createElement('tr');
         row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
 
-row.innerHTML = 
-    `<td>${bruker.navn}</td>
-    <td class="ansatt-d">${bruker.ansattD || ''}</td>
-    <td class="actions">
-        <button onclick="håndterBruker(${bruker.id}, 'desktop')">
-            ${bruker.ansattD ? 'Frigjør Bruker' : 'Ta Bruker'}
-        </button>
-    </td>
-    <td class="ansatt-s">${bruker.ansattS || ''}</td>
-    <td class="actions">
-        <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
-            ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
-        </button>
-    </td>
-    <td>${bruker.passord || ''}</td>`;
+        row.innerHTML = 
+            `<td>${bruker.navn}</td>
+            <td class="ansatt-d">${bruker.ansattD || ''}</td>
+            <td class="actions">
+                <button onclick="håndterBruker(${bruker.id}, 'desktop')">
+                    ${bruker.ansattD ? 'Frigjør Bruker' : 'Ta Bruker'}
+                </button>
+            </td>
+            <td class="ansatt-s">${bruker.ansattS || ''}</td>
+            <td class="actions">
+                <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
+                    ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
+                </button>
+            </td>`;
 
 
         // Oppdater celler med klassen 'opptatt' hvis ansattD eller ansattS er fylt ut
