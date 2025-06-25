@@ -19,9 +19,9 @@
             text-align: center;
         }
         table {
-            width: 90%; /* Endret til 90 % */
-            max-width: 1000px; /* Endret til 1000 piksler */
-            margin: 20px auto; /* Center the table */
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
             border-collapse: collapse;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
@@ -48,25 +48,35 @@
         .actions {
             display: flex;
             justify-content: center;
-            align-items: center; /* Vertikalt sentralisert */
-            padding: 0; /* Fjerner padding */
-            margin: 0; /* Fjerner margin */
-            min-height: 50px; /* Juster høyden etter behov */
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            min-height: 50px;
         }
         .actions button {
-            width: auto; /* Gjør knappen smalere */
-            padding: 5px 10px; /* Legger til litt padding for bedre utseende */
-            background-color: #3498db; /* Valgfri farge */
-            color: white; /* Valgfri tekstfarge */
-            border: none; /* Fjerner kantlinje */
-            cursor: pointer; /* Endrer musepekeren */
-            border-radius: 25px; /* Runder hjørnene på knappen */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Legger til en subtil skygge */
-            transition: background-color 0.3s, box-shadow 0.3s; /* Legger til en overgangseffekt */
+            padding: 5px 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
         .actions button:hover {
-            background-color: #2980b9; /* Farge ved hover */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Forsterker skyggen ved hover */
+            background-color: #2980b9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        td button.copy-btn {
+            margin-left: 10px;
+            background-color: transparent;
+            color: #3498db;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        td button.copy-btn:hover {
+            color: #2c3e50;
         }
         a {
             text-decoration: none;
@@ -76,20 +86,22 @@
             text-decoration: underline;
         }
         th:first-child {
-            width: 150px; /* Set the width of the "Bruker" column */
+            width: 150px;
         }
         th:nth-child(2), th:nth-child(4) {
-            width: 250px; /* Set the width for both "Ansatt" columns */
+            width: 200px;
         }
-        th:nth-child(3), th:last-child {
-            width: 130px; /* Set the width for both "Desktop" and "Skann" columns */
+        th:nth-child(3), th:nth-child(5) {
+            width: 130px;
+        }
+        th:nth-child(6) {
+            width: 180px;
         }
     </style>
 </head>
 <body>
 
     <h1>Brukertildeling for Ongoing WMS</h1>
-
     <p><a href="faq.html">Ofte stilte spørsmål</a></p>
 
     <table>
@@ -100,13 +112,14 @@
                 <th>Desktop</th>
                 <th>Ansatt</th>
                 <th>Skann</th>
+                <th>Passord</th>
             </tr>
         </thead>
         <tbody id="brukerListe">
             <!-- Brukere vil bli lagt til her -->
         </tbody>
     </table>
-    
+
     <script src="app.js"></script>
 </body>
 </html>
