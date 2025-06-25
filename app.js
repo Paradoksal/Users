@@ -1,6 +1,5 @@
 const BASE_URL = 'https://node-red.cloudflareno.de/api';
 
-// Hent brukere fra backend og oppdater tabellen
 async function hentBrukere() {
     try {
         const response = await fetch(`${BASE_URL}/brukere`);
@@ -13,16 +12,22 @@ async function hentBrukere() {
     }
 }
 
-// Oppdater tabellen med brukere
 function oppdaterBrukerListe(brukere) {
     const brukerListe = document.getElementById('brukerListe');
-    brukerListe.innerHTML = ''; // Rens tabellen
-
-    const fragment = document.createDocumentFragment(); // For å forbedre ytelsen
+    brukerListe.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     brukere.forEach(bruker => {
         const row = document.createElement('tr');
-        row.dataset.brukerId = bruker.id; // Legg til brukerID i dataset
+        row.dataset.brukerId = bruker.id;
+
+        const passord = bruker.passord || '';
+        const passordCell = `
+            <td>
+                <span>${passord}</span>
+                ${passord ? `<button class="copy-btn" title="Kopier passord" onclick="kopierPassord('${passord}')">📋</button>` : ''}
+            </td>
+        `;
 
         row.innerHTML = 
             `<td>${bruker.navn}</td>
@@ -37,10 +42,9 @@ function oppdaterBrukerListe(brukere) {
                 <button onclick="håndterBruker(${bruker.id}, 'skannemodul')">
                     ${bruker.ansattS ? 'Frigjør Bruker' : 'Ta Bruker'}
                 </button>
-            </td>`;
+            </td>
+            ${passordCell}`;
 
-
-        // Oppdater celler med klassen 'opptatt' hvis ansattD eller ansattS er fylt ut
         if (bruker.ansattD) {
             row.cells[1].classList.add('opptatt');
             row.cells[2].classList.add('opptatt');
@@ -56,15 +60,18 @@ function oppdaterBrukerListe(brukere) {
     brukerListe.appendChild(fragment);
 }
 
-// Finn den første ledige brukeren for en gitt type
+function kopierPassord(passord) {
+    navigator.clipboard.writeText(passord)
+        .catch(() => alert('Klarte ikke å kopiere passord.'));
+}
+
 function finnFørsteLedigeBruker(brukere, type) {
     return brukere.find(bruker => {
-        return (type === 'desktop' && !bruker.ansattD) || 
+        return (type === 'desktop' && !bruker.ansattD) ||
                (type === 'skannemodul' && !bruker.ansattS);
     });
 }
 
-// Håndter bruker basert på status og type
 async function håndterBruker(brukerId, type) {
     try {
         const response = await fetch(`${BASE_URL}/brukere`);
@@ -72,19 +79,13 @@ async function håndterBruker(brukerId, type) {
         const brukere = await response.json();
 
         const row = document.querySelector(`tr[data-bruker-id="${brukerId}"]`);
-        if (!row) {
-            alert('Brukeren finnes ikke.');
-            return;
-        }
+        if (!row) return alert('Brukeren finnes ikke.');
 
         const ansattCell = type === 'desktop' ? row.cells[1] : row.cells[3];
-        const statusCell = type === 'desktop' ? row.cells[2] : row.cells[4];
         const ansattNavn = ansattCell.textContent.trim();
 
         if (!ansattNavn) {
-            // Dette skjer når brukeren er ledig og du vil "ta" den.
             const førsteLedigeBruker = finnFørsteLedigeBruker(brukere, type);
-
             const erAdmin = row.cells[0].textContent.trim().includes("Admin");
 
             if (førsteLedigeBruker && førsteLedigeBruker.id !== brukerId && !erAdmin) {
@@ -92,61 +93,39 @@ async function håndterBruker(brukerId, type) {
                 return;
             }
 
-const ansatt = prompt('Vennligst skriv inn ditt navn:');
-if (ansatt) {
-    // Del navnet i ord
-    const ord = ansatt.split(' ');
-    console.log('Splittede ord:', ord); // Logg ut de splittede ordene
+            const ansatt = prompt('Vennligst skriv inn ditt navn:');
+            if (ansatt) {
+                const riktigNavn = ansatt.split(' ')
+                    .map(ord => ord.charAt(0).toUpperCase() + ord.slice(1))
+                    .join(' ');
 
-    // Gjør første bokstav stor for hvert ord, men la resten være som det er
-    const riktigNavn = ord
-        .map(ord => {
-            const capitalized = ord.charAt(0).toUpperCase() + ord.slice(1); // Ikke gjør resten til små bokstaver
-            console.log(`Originalt ord: ${ord}, Endret ord: ${capitalized}`);
-            return capitalized;
-        })
-        .join(' ');
-
-    console.log('Riktig navn:', riktigNavn); // Logg ut resultatet
-
-    const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            brukerId: brukerId,
-            ansatt: riktigNavn,
-            aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
-        })
-    });
-
-    if (updateResponse.ok) {
-        hentBrukere();
-    } else {
-        alert('Noe gikk galt med å ta brukeren.');
-    }
-}
-        } else {
-            // Dette skjer når brukeren er opptatt og du vil frigjøre den.
-            const bekreftelse = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
-            if (bekreftelse) {
                 const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        brukerId: brukerId,
+                        ansatt: riktigNavn,
+                        aksjon: type === 'desktop' ? 'taDesktop' : 'taSkannemodul'
+                    })
+                });
+
+                if (updateResponse.ok) hentBrukere();
+                else alert('Noe gikk galt med å ta brukeren.');
+            }
+        } else {
+            const bekreft = confirm(`Er du sikker på at du vil frigjøre ${ansattNavn}?`);
+            if (bekreft) {
+                const updateResponse = await fetch(`${BASE_URL}/oppdater`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         brukerId: brukerId,
                         aksjon: type === 'desktop' ? 'frigjørDesktop' : 'frigjørSkannemodul'
                     })
                 });
 
-                if (updateResponse.ok) {
-                    hentBrukere();
-                } else {
-                    alert('Noe gikk galt med å frigjøre brukeren.');
-                }
+                if (updateResponse.ok) hentBrukere();
+                else alert('Noe gikk galt med å frigjøre brukeren.');
             }
         }
     } catch (error) {
@@ -155,8 +134,6 @@ if (ansatt) {
     }
 }
 
-// Initialiser ved å hente brukere når siden lastes
+// Init
 hentBrukere();
-
-// Oppdater tabellen automatisk hvert 10. sekund
 setInterval(hentBrukere, 10000);
