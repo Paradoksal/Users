@@ -18,6 +18,21 @@
         p {
             text-align: center;
         }
+        .info-box {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 5px;
+            color: #856404;
+        }
+        .info-box strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
         table {
             width: 90%;
             max-width: 1000px;
@@ -100,10 +115,18 @@
     </style>
 </head>
 <body>
-
     <h1>Brukertildeling for Ongoing WMS</h1>
     <p><a href="faq.html">Ofte stilte spørsmål</a></p>
-
+    
+    <div class="info-box">
+        <strong>OBS!</strong>
+        Trikset med å logge inn på desktop for deretter å åpne skannemodulen er patchet av Ongoing, og vil nå kaste ut andre brukere som har logget direkte inn i skannemodulen!
+        <br><br>
+        Det betyr at hvis du logger inn på desktop og åpner skannemodulen så bruker du både en desktop og skann bruker.
+        <br><br>
+        Det er derfor lagt til flere brukere for å unngå at man kaster hverandre ut.
+    </div>
+    
     <table>
         <thead>
             <tr>
@@ -119,7 +142,6 @@
             <!-- Brukere vil bli lagt til her -->
         </tbody>
     </table>
-
     <script src="app.js"></script>
 </body>
 </html>
