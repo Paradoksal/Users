@@ -28,10 +28,58 @@
             border-radius: 5px;
             color: #856404;
         }
-        .info-box strong {
-            display: block;
-            margin-bottom: 10px;
+        .info-box-blue {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #d1ecf1;
+            border: 2px solid #17a2b8;
+            border-radius: 5px;
+            color: #0c5460;
+        }
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .box-header strong {
             font-size: 18px;
+            margin: 0;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            padding: 0 5px;
+        }
+        .info-box .toggle-btn {
+            color: #856404;
+        }
+        .info-box-blue .toggle-btn {
+            color: #0c5460;
+        }
+        .toggle-btn.collapsed {
+            transform: rotate(180deg);
+        }
+        .box-content {
+            margin-top: 10px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .box-content.hidden {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+        }
+        .info-box-blue img {
+            max-width: 100%;
+            margin-top: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         table {
             width: 90%;
@@ -118,13 +166,30 @@
     <h1>Brukertildeling for Ongoing WMS</h1>
     <p><a href="faq.html">Ofte stilte spørsmål</a></p>
     
-    <div class="info-box">
-        <strong>OBS!</strong>
-        Trikset med å logge inn på desktop for deretter å åpne skannemodulen er patchet av Ongoing, og vil nå kaste ut andre brukere som har logget direkte inn i skannemodulen!
-        <br><br>
-        Det betyr at hvis du logger inn på desktop og åpner skannemodulen så bruker du både en desktop og skann bruker.
-        <br><br>
-        Det er derfor lagt til flere brukere for å unngå at man kaster hverandre ut.
+    <div class="info-box-blue" id="info-box">
+        <div class="box-header" onclick="toggleBox('info-box')">
+            <strong>ℹ️ Informasjon</strong>
+            <button class="toggle-btn">▲</button>
+        </div>
+        <div class="box-content">
+            Hvis noen er logget inn på samme bruker på Desktop og Skanning så vil Desktop brukeren noen ganger få et varsel om at samme bruker er logget inn på Skanning på en annen enhet. Dette varselet kan ignoreres og boksen kan lukkes, og man kan fortsette som normalt. <strong>Ikke trykk på noen av knappene for å bytte bruker eller avslutte skanningprosess!</strong>
+            <br><br>
+            <img src="https://iili.io/fOiMBJn.png" alt="Skjermbilde av varselet">
+        </div>
+    </div>
+    
+    <div class="info-box" id="obs-box">
+        <div class="box-header" onclick="toggleBox('obs-box')">
+            <strong>⚠️ OBS!</strong>
+            <button class="toggle-btn">▲</button>
+        </div>
+        <div class="box-content">
+            Trikset med å logge inn på desktop for deretter å åpne skannemodulen er patchet av Ongoing, og vil nå kaste ut andre brukere som har logget direkte inn i skannemodulen!
+            <br><br>
+            Det betyr at hvis du logger inn på desktop og åpner skannemodulen så bruker du både en desktop og skann bruker.
+            <br><br>
+            Det er derfor lagt til flere brukere for å unngå at man kaster hverandre ut.
+        </div>
     </div>
     
     <table>
@@ -143,5 +208,36 @@
         </tbody>
     </table>
     <script src="app.js"></script>
+    <script>
+        function toggleBox(boxId) {
+            const box = document.getElementById(boxId);
+            const content = box.querySelector('.box-content');
+            const toggleBtn = box.querySelector('.toggle-btn');
+            
+            const isHidden = content.classList.toggle('hidden');
+            toggleBtn.classList.toggle('collapsed');
+            
+            // Lagre tilstanden i localStorage
+            localStorage.setItem(boxId + '-collapsed', isHidden);
+        }
+        
+        // Last inn lagrede tilstander når siden lastes
+        document.addEventListener('DOMContentLoaded', function() {
+            const boxes = ['info-box', 'obs-box'];
+            
+            boxes.forEach(function(boxId) {
+                const isCollapsed = localStorage.getItem(boxId + '-collapsed') === 'true';
+                
+                if (isCollapsed) {
+                    const box = document.getElementById(boxId);
+                    const content = box.querySelector('.box-content');
+                    const toggleBtn = box.querySelector('.toggle-btn');
+                    
+                    content.classList.add('hidden');
+                    toggleBtn.classList.add('collapsed');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
